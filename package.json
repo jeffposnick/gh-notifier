@@ -5,6 +5,7 @@
   "main": "dev/index.html",
   "devDependencies": {
     "browser-sync": "^2.0.1",
+    "dom-urls": "^0.1.1",
     "firebase": "^2.2.0",
     "gulp": "^3.8.11",
     "gulp-bower": "0.0.10"

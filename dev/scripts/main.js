@@ -52,7 +52,7 @@ ref.onAuth(function(authData) {
     var userSubscriptionRef = ref.child('subscriptions').child(authData.uid);
 
     userSubscriptionRef.once('value', function(subscription) {
-      if (subscription) {
+      if (subscription.val()) {
         t.subscriptionId = subscription.val().subscriptionId;
       } else {
         Notification.requestPermission(function (result) {
