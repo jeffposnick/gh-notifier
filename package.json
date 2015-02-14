@@ -1,0 +1,25 @@
+{
+  "name": "gh-notifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dev/index.html",
+  "devDependencies": {
+    "browser-sync": "^2.0.1",
+    "firebase": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-bower": "0.0.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeffposnick/gh-notifier"
+  },
+  "author": "Jeff Posnick <jeffy@google.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jeffposnick/gh-notifier/issues"
+  },
+  "homepage": "https://jeffy.info/gh-notifier/"
+}

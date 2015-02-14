@@ -1,0 +1,10 @@
+{
+  "name": "gh-notifier",
+  "private": true,
+  "dependencies": {
+    "core-ajax": "Polymer/core-ajax#^0.5.4",
+    "firebase": "~2.2.0",
+    "polymer": "Polymer/polymer#^0.5.4",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.5.4"
+  }
+}
