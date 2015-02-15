@@ -104,8 +104,20 @@ t.saveWebhook = function() {
 
   fetch(request).then(function(response) {
     showToast('Notification settings updated.');
-    ref.child('repoToSubscriptionIds').child(t.selectedRepo.id).push(t.subscriptionId);
     t.showChooseRepo();
+
+    if (method === 'POST') {
+      ref.child('repoToSubscriptionIds').child(t.selectedRepo.id).push(t.subscriptionId);
+    } else if (method === 'DELETE') {
+      ref.child('repoToSubscriptionIds').child(t.selectedRepo.id).once('value', function(snapshot) {
+        var currentSubscriptions = snapshot.val();
+        Object.keys(currentSubscriptions).forEach(function(key) {
+          if (currentSubscriptions[key] === t.subscriptionId) {
+            ref.child('repoToSubscriptionIds').child(t.selectedRepo.id).child(key).remove();
+          }
+        });
+      });
+    }
   }).catch(function(error) {
     showToast(error);
   });
