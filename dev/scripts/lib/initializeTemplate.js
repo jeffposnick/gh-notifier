@@ -1,9 +1,12 @@
 'use strict';
 
-var config = require('./config.js');
-var ref = require('./firebaseRefs.js').ref;
-var repoToSubscriptionIdsRef = require('./firebaseRefs.js').repoToSubscriptionIdsRef;
-var subscriptionsRef = require('./firebaseRefs.js').subscriptionsRef
+var firebaseRefs = require('./firebaseRefs.js');
+
+var ref = firebaseRefs.ref;
+var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
+var subscriptionsRef = firebaseRefs.subscriptionsRef;
+var firebaseUrl = firebaseRefs.firebaseUrl;
+var gitHubActivityFirebaseUrl = firebaseRefs.gitHubActivityFirebaseUrl;
 
 module.exports = function(t) {
   var showToast = function(text) {
@@ -61,7 +64,7 @@ module.exports = function(t) {
     });
 
     var ourWebHooks = e.detail.response.filter(function(webHook) {
-      return webHook.config.url.indexOf(config.firebaseUrl) === 0;
+      return webHook.config.url.indexOf(firebaseUrl) === 0;
     });
 
     if (ourWebHooks.length > 0) {
@@ -97,7 +100,7 @@ module.exports = function(t) {
       body = {
         active: true,
         config: {
-          url: config.gitHubActivityFirebaseUrl,
+          url: gitHubActivityFirebaseUrl,
           'content_type': 'json'
         },
         events: activeEvents,

@@ -1,14 +1,14 @@
 'use strict';
 
-var config = require('./config.js');
 var Firebase = require('firebase');
 
-var ref = new Firebase(config.firebaseUrl)
-var repoToSubscriptionIdsRef = ref.child('repoToSubscriptionIds');
-var subscriptionsRef = ref.child('subscriptions');
+var firebaseUrl = 'https://burning-inferno-3626.firebaseio.com';
+var ref = new Firebase(firebaseUrl);
 
 module.exports = {
+  firebaseUrl: firebaseUrl,
+  gitHubActivityFirebaseUrl: firebaseUrl + '/githubActivity.json',
   ref: ref,
-  repoToSubscriptionIdsRef: repoToSubscriptionIdsRef,
-  subscriptionsRef: subscriptionsRef
+  repoToSubscriptionIdsRef: ref.child('repoToSubscriptionIds'),
+  subscriptionsRef: ref.child('subscriptions')
 };
