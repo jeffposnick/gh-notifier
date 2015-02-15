@@ -5,12 +5,13 @@
 
 body {
   font-family: Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 core-pages > div {
   height: 100vh;
   margin: 0;
-  width: 95vw;
+  width: 100vw;
 }
 
 paper-button > core-icon {
