@@ -1,12 +1,11 @@
 var https = require('https');
-var util = require('util');
 var URL = require('dom-urls');
 var Firebase = require('firebase');
 
-var FIREBASE_INSTANCE = 'burning-inferno-3626';
+var FIREBASE_URL = 'https://burning-inferno-3626.firebaseio.com';
 var GCM_URL = new URL('https://android.googleapis.com/gcm/send');
 
-var ref = new Firebase(util.format('https://%s.firebaseio.com', FIREBASE_INSTANCE));
+var ref = new Firebase(FIREBASE_URL);
 var gitHubRef = ref.child('githubActivity');
 var repoToSubscriptionIdsRef = ref.child('repoToSubscriptionIds');
 
