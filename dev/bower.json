@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "core-elements": "Polymer/core-elements#^0.5.4",
-    "firebase": "~2.2.0",
     "paper-elements": "Polymer/paper-elements#^0.5.4",
     "polymer": "Polymer/polymer#^0.5.4",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.5.4"

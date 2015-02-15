@@ -1,9 +1,11 @@
 'use strict';
 
+var config = require('./lib/config.js');
+var Firebase = require('firebase');
+
 navigator.serviceWorker.register('service-worker.js');
 
-var FIREBASE_URL = 'https://burning-inferno-3626.firebaseio.com';
-var ref = new Firebase(FIREBASE_URL);
+var ref = new Firebase(config.firebaseUrl);
 
 var t = document.querySelector('#page-template');
 
@@ -50,7 +52,7 @@ t.processHooks = function(e) {
   });
 
   var ourWebHooks = e.detail.response.filter(function(webHook) {
-    return webHook.config.url.indexOf(FIREBASE_URL) === 0;
+    return webHook.config.url.indexOf(config.firebaseUrl) === 0;
   });
 
   if (ourWebHooks.length > 0) {
@@ -86,7 +88,7 @@ t.saveWebhook = function() {
     body = {
       active: true,
       config: {
-        url: FIREBASE_URL + '/githubActivity.json',
+        url: config.firebaseUrl + '/githubActivity.json',
         'content_type': 'json'
       },
       events: activeEvents,
@@ -102,7 +104,7 @@ t.saveWebhook = function() {
     body: body ? JSON.stringify(body) : null
   });
 
-  fetch(request).then(function(response) {
+  fetch(request).then(function() {
     showToast('Notification settings updated.');
     t.showChooseRepo();
 

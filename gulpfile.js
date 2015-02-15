@@ -1,11 +1,29 @@
 var bower = require('gulp-bower');
 var browserSync = require('browser-sync');
+var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
-var path = require('path');
+var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
+var source = require('vinyl-source-stream');
+var sourcemaps = require('gulp-sourcemaps');
 var spawn = require('child_process').spawn;
+var watchify = require('watchify');
 
 var DEV_DIR = 'dev/';
+
+gulp.task('js', bundle);
+var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
+bundler.on('update', bundle);
+function bundle() {
+  return bundler.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(DEV_DIR + 'bundled_scripts'));
+}
 
 gulp.task('bower', function() {
   return bower({
@@ -20,7 +38,7 @@ gulp.task('npm-install', function(callback) {
   });
 });
 
-gulp.task('serve:dev', function() {
+gulp.task('serve:dev', ['js'], function() {
   browserSync({
     server: {
       baseDir: DEV_DIR

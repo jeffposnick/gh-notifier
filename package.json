@@ -5,11 +5,17 @@
   "main": "dev/index.html",
   "devDependencies": {
     "browser-sync": "^2.0.1",
+    "browserify": "^8.1.3",
     "dom-urls": "^0.1.1",
     "firebase": "^2.2.0",
     "gulp": "^3.8.11",
     "gulp-bower": "0.0.10",
-    "run-sequence": "^1.0.2"
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-util": "^3.0.3",
+    "run-sequence": "^1.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
