@@ -1,33 +1,33 @@
 var https = require('https');
 var URL = require('dom-urls');
-var Firebase = require('firebase');
+var firebaseRefs = require('./dev/scripts/lib/firebaseRefs.js');
 
-var FIREBASE_URL = 'https://burning-inferno-3626.firebaseio.com';
-var GCM_URL = new URL('https://android.googleapis.com/gcm/send');
-
-var ref = new Firebase(FIREBASE_URL);
-var gitHubRef = ref.child('githubActivity');
-var repoToSubscriptionIdsRef = ref.child('repoToSubscriptionIds');
+var ref = firebaseRefs.ref;
+var gitHubActivityRef = firebaseRefs.gitHubActivityRef;
+var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
+var gcmUrl = new URL('https://android.googleapis.com/gcm/send');
 
 ref.child('apiKey').once('value', function(data) {
-  apiKey = data.val();
+  var apiKey = data.val();
 
-  gitHubRef.on('child_added', function(gitHubActivity) {
-    var repoId = gitHubActivity.val().repository.id;
+  gitHubActivityRef.on('child_added', function(data) {
+    var repoId = data.val().repository.id;
+
     repoToSubscriptionIdsRef.child(repoId).once('value', function(data) {
       var subscripitionIdsMapping = data.val();
       var subscriptionIds = Object.keys(subscripitionIdsMapping).map(function(key) {
         return subscripitionIdsMapping[key];
       });
+
       sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
         if (error) {
-          console.error('GCM returned an error:', error);
+          console.error('GCM request resulted in an error:', error);
         } else {
           var response = JSON.parse(responseBody);
           if (response.success) {
-            gitHubActivity.ref().remove();
+            gitHubActivityRef.ref().remove();
           } else {
-            console.error('GCM returned an error:', response);
+            console.error('GCM returned an error response:', response);
           }
         }
       });
@@ -41,9 +41,9 @@ function sendNotification(apiKey, subscriptionIds, callback) {
       authorization: 'key=' + apiKey,
       'content-type': 'application/json'
     },
-    hostname: GCM_URL.hostname,
+    hostname: gcmUrl.hostname,
     method: 'POST',
-    path: GCM_URL.pathname
+    path: gcmUrl.pathname
   };
 
   var body = {
