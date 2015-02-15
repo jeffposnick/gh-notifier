@@ -5,7 +5,7 @@ navigator.serviceWorker.register('service-worker.js');
 var t = document.querySelector('#page-template');
 
 t.login = function() {
-  ref.authWithOAuthPopup('github', function(error) {
+  ref.authWithOAuthRedirect('github', function(error) {
     if (error) {
       console.error('Login failed:', error);
     }
@@ -57,8 +57,8 @@ ref.onAuth(function(authData) {
       } else {
         Notification.requestPermission(function (result) {
           if (result !== 'denied') {
-            navigator.serviceWorker.ready.then(function (registration) {
-              registration.pushManager.subscribe().then(function (subscription) {
+            navigator.serviceWorker.ready.then(function(registration) {
+              registration.pushManager.subscribe().then(function(subscription) {
                 t.subscriptionId = subscription.subscriptionId;
 
                 userSubscriptionRef.set({

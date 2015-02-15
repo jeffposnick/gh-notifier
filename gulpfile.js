@@ -25,7 +25,8 @@ gulp.task('serve:dev', function() {
     server: {
       baseDir: DEV_DIR
     },
-    notify: false
+    notify: false,
+    open: false
   });
 });
 

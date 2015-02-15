@@ -1,4 +1,4 @@
-var http = require('http');
+var https = require('https');
 var util = require('util');
 var URL = require('dom-urls');
 var Firebase = require('firebase');
@@ -22,10 +22,14 @@ ref.child('apiKey').once('value', function(data) {
       });
       sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
         if (error) {
-          console.error(error);
+          console.error('GCM returned an error:', error);
         } else {
-          console.log(responseBody);
-          gitHubActivity.ref().remove();
+          var response = JSON.parse(responseBody);
+          if (response.success) {
+            gitHubActivity.ref().remove();
+          } else {
+            console.error('GCM returned an error:', response);
+          }
         }
       });
     });
@@ -38,19 +42,20 @@ function sendNotification(apiKey, subscriptionIds, callback) {
       authorization: 'key=' + apiKey,
       'content-type': 'application/json'
     },
-    host: GCM_URL.origin,
+    hostname: GCM_URL.hostname,
     method: 'POST',
     path: GCM_URL.pathname
   };
 
   var body = {
     data: {
-      dummy: true
+      title: 'Title from GCM',
+      message: 'Message from GCM'
     },
     'registration_ids': subscriptionIds
   };
 
-  var request = http.request(options, function(response) {
+  var request = https.request(options, function(response) {
     var responseBody = '';
 
     response.on('data', function(chunk) {
