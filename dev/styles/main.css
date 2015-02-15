@@ -1,0 +1,44 @@
+@font-face {
+  font-family: Roboto;
+  src: url('../fonts/Roboto-Regular.woff2') format('woff2');
+}
+
+body {
+  font-family: Roboto, sans-serif;
+}
+
+core-pages > div {
+  height: 100vh;
+  margin: 0;
+  width: 95vw;
+}
+
+paper-button > core-icon {
+  margin-right: 0.5em;
+}
+
+#repo-list {
+  list-style: none;
+  padding: 0;
+}
+
+#repo-list > li {
+  margin: 1em;
+}
+
+#edit-repo {
+  margin: 1em;
+}
+
+#web-hook-list {
+  width: 340px;
+  max-width: 100%;
+}
+
+#web-hook-list > div {
+  padding: 1em;
+}
+
+#web-hook-list > div:nth-child(even) {
+  background-color: rgb(240, 240, 240);
+}

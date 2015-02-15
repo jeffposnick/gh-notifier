@@ -17,9 +17,56 @@
 
   <body fullbleed>
     <template id="page-template" is="auto-binding">
-      <template if="{{!loggedIn}}">
-        <button on-tap="{{login}}">Login</button>
-      </template>
+      <core-pages valueattr="id"
+                  selected="{{selectedPage}}"
+                  on-core-select="{{scrollToTop}}">
+        <div id="log-in" layout horizontal center-center>
+          <paper-button raised on-tap="{{login}}">
+            <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
+            <span>Login with GitHub</span>
+          </paper-button>
+        </div>
+
+        <div id="choose-repo">
+          <ul id="repo-list">
+            <template repeat="{{gitHubRepo in gitHubRepos}}">
+              <li>
+                <paper-button raised on-tap="{{showEditRepo}}">
+                  <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
+                  <span>{{gitHubRepo.full_name}}</span>
+                </paper-button>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <div id="edit-repo">
+          <h1>{{selectedRepo.full_name}}</h1>
+          <h3>Notify for:</h3>
+          <div id="web-hook-list">
+            <template repeat="{{event in allWebhookEvents}}">
+              <div layout horizontal center>
+                <div flex>{{event}}</div>
+                <paper-toggle-button class="event"
+                                     id="{{event}}"
+                                     disabled>
+                </paper-toggle-button>
+              </div>
+            </template>
+
+            <div layout horizontal justified>
+              <paper-button raised on-tap="{{showChooseRepo}}">
+                <span>Cancel</span>
+              </paper-button>
+              <paper-button raised on-tap="{{saveWebhook}}">
+                <span>Save</span>
+              </paper-button>
+            </div>
+          </div>
+        </div>
+      </core-pages>
+
+      <paper-toast></paper-toast>
 
       <template if="{{loggedIn && subscriptionId}}">
         <core-ajax auto
@@ -30,8 +77,13 @@
         </core-ajax>
       </template>
 
-      <template repeat="{{gitHubRepo in gitHubRepos}}">
-        <button on-tap="{{addWebhook}}">{{gitHubRepo.full_name}}</button>
+      <template if="{{loggedIn && selectedRepo}}">
+        <core-ajax auto
+                   url="{{selectedRepo.hooks_url}}"
+                   handleAs="json"
+                   headers='{"Authorization": "token {{authData.github.accessToken}}"}'
+                   on-core-response="{{processHooks}}">
+        </core-ajax>
       </template>
     </template>
 

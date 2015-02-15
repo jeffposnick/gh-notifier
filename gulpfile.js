@@ -28,6 +28,9 @@ gulp.task('serve:dev', function() {
     notify: false,
     open: false
   });
+
+  gulp.watch(DEV_DIR + '**/*.{js,html,css,png}', browserSync.reload);
+  gulp.watch(DEV_DIR + 'bower.json', ['bower']);
 });
 
 gulp.task('backend', function(callback) {
