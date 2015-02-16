@@ -3,9 +3,7 @@ Work-in-progress.
 
 ## Technologies Used
 - Polymer
-- Service workers
-  - Offline
-  - Notifications
+- Service worker notifications
 - Firebase
 - GitHub API
 - Google Cloud Messaging
