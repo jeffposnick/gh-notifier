@@ -1,3 +1,4 @@
+var dateFormat = require('date-format');
 var https = require('https');
 var URL = require('dom-urls');
 var firebaseRefs = require('./dev/scripts/lib/firebaseRefs.js');
@@ -6,6 +7,8 @@ var ref = firebaseRefs.ref;
 var gitHubActivityRef = firebaseRefs.gitHubActivityRef;
 var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
 var gcmUrl = new URL('https://android.googleapis.com/gcm/send');
+
+logInfo('Starting up...');
 
 ref.child('apiKey').once('value', function(data) {
   var apiKey = data.val();
@@ -22,22 +25,22 @@ ref.child('apiKey').once('value', function(data) {
           return subscripitionIdsMapping[key];
         });
 
-        console.log('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
+        logInfo('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
 
         sendNotification(apiKey, subscriptionIds, updatePayload, function(error, responseBody) {
           if (error) {
-            console.error('GCM request resulted in an error:', error);
+            logError('GCM request resulted in an error:', error);
           } else {
             var response = JSON.parse(responseBody);
             if (response.success) {
               gitHubActivityRef.ref().remove();
             } else {
-              console.error('GCM returned an error response:', response);
+              logError('GCM returned an error response:', response);
             }
           }
         });
       } else {
-        console.log('Got a notification for repo', repoId, 'but there are no subscribers.');
+        logError('Got a notification for repo', repoId, 'but there are no subscribers.');
         gitHubActivityRef.ref().remove();
       }
     });
@@ -64,7 +67,7 @@ function sendNotification(apiKey, subscriptionIds, updatePayload, callback) {
       title: 'GitHub Activity'
     }
   } catch(error) {
-    console.error('Error while assigning data:', error, updatePayload);
+    logError('Error while assigning data:', error, updatePayload);
   }
 
   var body = {
@@ -90,4 +93,16 @@ function sendNotification(apiKey, subscriptionIds, updatePayload, callback) {
 
   request.write(JSON.stringify(body));
   request.end();
+}
+
+function logInfo() {
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift('[' + dateFormat('yyyy-MM-dd hh:mm:ss', new Date()) + ']', 'INFO');
+  console.log.apply(console, args);
+}
+
+function logError() {
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift('[' + dateFormat('yyyy-MM-dd hh:mm:ss', new Date()) + ']', 'ERROR');
+  console.log.apply(console, args);
 }
