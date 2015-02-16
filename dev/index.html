@@ -23,7 +23,7 @@
                   selected="{{selectedPage}}"
                   on-core-select="{{scrollToTop}}">
         <div id="log-in" layout horizontal center-center>
-          <paper-button raised on-tap="{{login}}">
+          <paper-button raised on-click="{{login}}">
             <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
             <span>Login with GitHub</span>
           </paper-button>
@@ -39,13 +39,13 @@
                                      checked?="{{gitHubRepo.activeSubscription}}"
                                      on-change="{{toggleSubscriptionToRepo}}">
                 </paper-toggle-button>
-                <paper-button raised on-tap="{{showEditRepo}}">
+                <paper-button raised on-click="{{showEditRepo}}">
                   <span>Edit Triggers</span>
                 </paper-button>
               </li>
             </template>
           </ul>
-          <paper-button raised on-tap="{{logout}}" self-start>
+          <paper-button raised on-click="{{logout}}" self-start>
             <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
             <span>Logout</span>
           </paper-button>
@@ -65,10 +65,10 @@
             </template>
           </ul>
           <div layout horizontal>
-            <paper-button raised on-tap="{{showChooseRepo}}" self-start>
+            <paper-button raised on-click="{{showChooseRepo}}" self-start>
               <span>Cancel</span>
             </paper-button>
-            <paper-button raised on-tap="{{saveWebhook}}" self-start>
+            <paper-button raised on-click="{{saveWebhook}}" self-start>
               <span>Save</span>
             </paper-button>
           </div>
