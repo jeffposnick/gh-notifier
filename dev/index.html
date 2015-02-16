@@ -50,8 +50,7 @@
         </div>
 
         <div id="edit-repo" layout vertical>
-          <h1>{{selectedRepo.full_name}}</h1>
-          <h3>Notify for:</h3>
+          <header>Triggers for {{selectedRepo.name}}</header>
           <ul id="web-hook-list" flex>
             <template repeat="{{event in allWebhookEvents}}">
               <li layout horizontal center>

@@ -8,6 +8,11 @@ body {
   overflow: hidden;
 }
 
+header {
+  margin-left: 1em;
+  font-size: 2em;
+}
+
 core-pages > div {
   height: 100vh;
   margin: 0.25em;
