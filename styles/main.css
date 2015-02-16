@@ -3,19 +3,23 @@
   src: url('../fonts/Roboto-Regular.woff2') format('woff2');
 }
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: Roboto, sans-serif;
-  overflow: hidden;
 }
 
 header {
-  margin-left: 1em;
-  font-size: 2em;
+  margin: 0.25em 0.25em 0.25em 1em;
 }
 
 core-pages > div {
   height: 100vh;
-  margin: 0.25em;
   width: 100vw;
 }
 
@@ -39,11 +43,14 @@ paper-button > core-icon {
 ul {
   border: 1px solid rgb(206, 206, 206);
   list-style: none;
-  margin-left: 1em;
+  margin: 1em;
   overflow-y: scroll;
   padding: 0;
-  width: 95vw;
-  max-width: 600px;
+  max-width: 40em;
+}
+
+ul#web-hook-list {
+  margin-top: 0;
 }
 
 li {
@@ -55,10 +62,25 @@ li:nth-child(even) {
 }
 
 li > span {
-  margin-top: 0.75em;
+  word-wrap: break-word;
 }
 
 li > paper-toggle-button {
   margin-right: 0.75em;
-  margin-top: 0.75em;
+}
+
+@media (max-width: 480px) {
+  ul {
+    margin-top: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  li {
+    padding: 0.2em;
+  }
+
+  header {
+    margin-left: 0.2em;
+  }
 }
