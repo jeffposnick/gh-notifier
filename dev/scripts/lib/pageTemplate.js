@@ -166,6 +166,10 @@ module.exports = function(t) {
   };
 
   t.addEventListener('template-bound', function() {
+    navigator.serviceWorker.register('service-worker.js').catch(function(error) {
+      showToast('Service worker registration failed:' + error);
+    });
+
     ref.onAuth(function(authData) {
       if (authData) {
         t.loggedIn = true;
@@ -174,12 +178,16 @@ module.exports = function(t) {
         t.showChooseRepo();
 
         Notification.requestPermission(function(result) {
-          if (result !== 'denied') {
+          if (result === 'granted') {
             navigator.serviceWorker.ready.then(function(registration) {
               registration.pushManager.subscribe().then(function(subscription) {
                 t.subscriptionId = subscription.subscriptionId;
+              }).catch(function(error) {
+                showToast('BUG: PLEASE RELOAD PAGE. Push registration failed: ' + error);
               });
             });
+          } else {
+            showToast('Unable to proceed without notification permission.');
           }
         });
       } else {
