@@ -32,7 +32,7 @@
         <div id="choose-repo" layout vertical>
           <ul id="repo-list" flex>
             <template repeat="{{gitHubRepo in gitHubRepos}}">
-              <li layout horizontal justified>
+              <li layout horizontal center>
                 <span flex>{{gitHubRepo.full_name}}</span>
                 <paper-toggle-button class="notification"
                                      id="{{gitHubRepo.id}}"

@@ -47,7 +47,7 @@ ul {
   margin: 1em;
   overflow-y: scroll;
   padding: 0;
-  max-width: 600px;
+  max-width: 40em;
 }
 
 li {
@@ -58,11 +58,6 @@ li:nth-child(even) {
   background-color: rgb(240, 240, 240);
 }
 
-li > span {
-  margin-top: 0.75em;
-}
-
 li > paper-toggle-button {
   margin-right: 0.75em;
-  margin-top: 0.75em;
 }
