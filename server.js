@@ -11,7 +11,8 @@ ref.child('apiKey').once('value', function(data) {
   var apiKey = data.val();
 
   gitHubActivityRef.on('child_added', function(data) {
-    var repoId = data.val().repository.id;
+    var updatePayload = data.val();
+    var repoId = updatePayload.repository.id;
 
     repoToSubscriptionIdsRef.child(repoId).once('value', function(data) {
       var subscripitionIdsMapping = data.val();
@@ -23,7 +24,7 @@ ref.child('apiKey').once('value', function(data) {
 
         console.log('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
 
-        sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
+        sendNotification(apiKey, subscriptionIds, updatePayload, function(error, responseBody) {
           if (error) {
             console.error('GCM request resulted in an error:', error);
           } else {
@@ -43,7 +44,7 @@ ref.child('apiKey').once('value', function(data) {
   });
 });
 
-function sendNotification(apiKey, subscriptionIds, callback) {
+function sendNotification(apiKey, subscriptionIds, updatePayload, callback) {
   var options = {
     headers: {
       authorization: 'key=' + apiKey,
@@ -54,11 +55,20 @@ function sendNotification(apiKey, subscriptionIds, callback) {
     path: gcmUrl.pathname
   };
 
+  var data = {};
+  try {
+    data = {
+      icon: updatePayload.sender.avatar_url,
+      message: updatePayload.repository.full_name + ' was updated by ' + updatePayload.sender.login,
+      tag: updatePayload.repository.full_name,
+      title: 'GitHub Activity'
+    }
+  } catch(error) {
+    console.error('Error while assigning data:', error, updatePayload);
+  }
+
   var body = {
-    data: {
-      title: 'Title from GCM',
-      message: 'Message from GCM'
-    },
+    data: data,
     'registration_ids': subscriptionIds
   };
 

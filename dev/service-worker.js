@@ -17,13 +17,14 @@ self.addEventListener('push', function(e) {
     data = e.data.json();
   }
   var title = data.title || 'GitHub Activity';
-  var message = data.message || 'No further details are available.';
-  var icon = 'images/icon.png';
+  var message = data.message || 'Sorry, details are not available.';
+  var icon = data.icon || 'images/icon.png';
+  var tag = data.tag || 'gh-notifier';
 
   var notification = new Notification(title, {
     body: message,
     icon: icon,
-    tag: 'gh-notifier'
+    tag: tag
   });
 
   return notification;
