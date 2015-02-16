@@ -1,5 +1,13 @@
 'use strict';
 
+self.addEventListener('install', function(e) {
+  e.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener('activate', function(e) {
+  e.waitUntil(self.clients.claim());
+});
+
 self.addEventListener('push', function(e) {
   if (!(self.Notification && self.Notification.permission === 'granted')) {
     console.error('Failed to display notification - not supported');
