@@ -15,8 +15,7 @@ body {
 }
 
 header {
-  margin-left: 1em;
-  font-size: 2em;
+  margin: 0.25em 0.25em 0.25em 1em;
 }
 
 core-pages > div {
@@ -50,6 +49,10 @@ ul {
   max-width: 40em;
 }
 
+ul#web-hook-list {
+  margin-top: 0;
+}
+
 li {
   padding: 1em;
 }
@@ -58,6 +61,26 @@ li:nth-child(even) {
   background-color: rgb(240, 240, 240);
 }
 
+li > span {
+  word-wrap: break-word;
+}
+
 li > paper-toggle-button {
   margin-right: 0.75em;
+}
+
+@media (max-width: 480px) {
+  ul {
+    margin-top: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  li {
+    padding: 0.2em;
+  }
+
+  header {
+    margin-left: 0.2em;
+  }
 }
