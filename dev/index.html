@@ -34,7 +34,8 @@
                 <span flex>{{gitHubRepo.full_name}}</span>
                 <paper-toggle-button class="notification"
                                      id="{{gitHubRepo.id}}"
-                                     disabled>
+                                     checked?="{{gitHubRepo.activeSubscription}}"
+                                     on-change="{{toggleSubscriptionToRepo}}">
                 </paper-toggle-button>
                 <paper-button raised on-tap="{{showEditRepo}}">
                   <span>Edit Triggers</span>
@@ -80,7 +81,7 @@
                    url="https://api.github.com/user/repos"
                    handleAs="json"
                    headers='{"Authorization": "token {{authData.github.accessToken}}"}'
-                   response="{{gitHubRepos}}">
+                   on-core-response="{{processGitHubRepos}}">
         </core-ajax>
       </template>
 

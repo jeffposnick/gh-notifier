@@ -118,27 +118,47 @@ module.exports = function(t) {
     fetch(request).then(function() {
       showToast('Notification settings updated.');
       t.showChooseRepo();
-
-      if (method === 'POST') {
-        repoToSubscriptionIdsRef.child(t.selectedRepo.id).push(t.subscriptionId);
-      } else if (method === 'DELETE') {
-        repoToSubscriptionIdsRef.child(t.selectedRepo.id).once('value', function(snapshot) {
-          var currentSubscriptions = snapshot.val();
-          Object.keys(currentSubscriptions).forEach(function(key) {
-            if (currentSubscriptions[key] === t.subscriptionId) {
-              repoToSubscriptionIdsRef.child(t.selectedRepo.id).child(key).remove();
-            }
-          });
-        });
-      }
     }).catch(function(error) {
       showToast(error);
     });
   };
 
+  t.toggleSubscriptionToRepo = function(e) {
+    if (e.target.checked) {
+      repoToSubscriptionIdsRef.child(e.target.id).push(t.subscriptionId);
+    } else {
+      repoToSubscriptionIdsRef.child(e.target.id).once('value', function(snapshot) {
+        var currentSubscriptions = snapshot.val();
+        Object.keys(currentSubscriptions).forEach(function(key) {
+          if (currentSubscriptions[key] == t.subscriptionId) {
+            snapshot.ref().child(key).remove();
+          }
+        });
+      });
+    }
+  };
+
   t.showEditRepo = function(e) {
     t.selectedRepo = e.target.templateInstance.model.gitHubRepo;
     t.selectedPage = 'edit-repo';
+  };
+
+  t.processGitHubRepos = function(e) {
+    t.gitHubRepos = e.detail.response;
+
+    repoToSubscriptionIdsRef.once('value', function(snapshot) {
+      var repoIdToSubscriptionIds = snapshot.val();
+      t.gitHubRepos.forEach(function(gitHubRepo) {
+        gitHubRepo.activeSubscription = false;
+        Object.keys(repoIdToSubscriptionIds).forEach(function(repoId) {
+          if (gitHubRepo.id == repoId) {
+            gitHubRepo.activeSubscription = Object.keys(repoIdToSubscriptionIds[repoId]).some(function(key) {
+              return repoIdToSubscriptionIds[repoId][key] == t.subscriptionId;
+            });
+          }
+        });
+      });
+    });
   };
 
   t.showChooseRepo = function() {

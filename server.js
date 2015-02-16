@@ -15,24 +15,30 @@ ref.child('apiKey').once('value', function(data) {
 
     repoToSubscriptionIdsRef.child(repoId).once('value', function(data) {
       var subscripitionIdsMapping = data.val();
-      var subscriptionIds = Object.keys(subscripitionIdsMapping).map(function(key) {
-        return subscripitionIdsMapping[key];
-      });
 
-      console.log('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
+      if (subscripitionIdsMapping) {
+        var subscriptionIds = Object.keys(subscripitionIdsMapping).map(function(key) {
+          return subscripitionIdsMapping[key];
+        });
 
-      sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
-        if (error) {
-          console.error('GCM request resulted in an error:', error);
-        } else {
-          var response = JSON.parse(responseBody);
-          if (response.success) {
-            gitHubActivityRef.ref().remove();
+        console.log('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
+
+        sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
+          if (error) {
+            console.error('GCM request resulted in an error:', error);
           } else {
-            console.error('GCM returned an error response:', response);
+            var response = JSON.parse(responseBody);
+            if (response.success) {
+              gitHubActivityRef.ref().remove();
+            } else {
+              console.error('GCM returned an error response:', response);
+            }
           }
-        }
-      });
+        });
+      } else {
+        console.log('Got a notification for repo', repoId, 'but there are no subscribers.');
+        gitHubActivityRef.ref().remove();
+      }
     });
   });
 });
