@@ -36,7 +36,7 @@ gulp.task('js', function() {
 gulp.task('js-watch', function() {
   var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
   bundle(bundler);
-  bundler.on('update', bundle);
+  bundler.on('update', bundle.bind(bundle, bundler));
 });
 
 gulp.task('bower', function() {
