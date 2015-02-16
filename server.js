@@ -19,6 +19,8 @@ ref.child('apiKey').once('value', function(data) {
         return subscripitionIdsMapping[key];
       });
 
+      console.log('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
+
       sendNotification(apiKey, subscriptionIds, function(error, responseBody) {
         if (error) {
           console.error('GCM request resulted in an error:', error);

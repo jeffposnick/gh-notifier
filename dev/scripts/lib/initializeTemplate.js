@@ -4,7 +4,6 @@ var firebaseRefs = require('./firebaseRefs.js');
 
 var ref = firebaseRefs.ref;
 var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
-var subscriptionsRef = firebaseRefs.subscriptionsRef;
 var firebaseUrl = firebaseRefs.firebaseUrl;
 var gitHubActivityFirebaseUrl = firebaseRefs.gitHubActivityFirebaseUrl;
 
@@ -154,24 +153,12 @@ module.exports = function(t) {
         showToast('Logged in.');
         t.showChooseRepo();
 
-        var userSubscriptionRef = subscriptionsRef.child(authData.uid);
-
-        userSubscriptionRef.once('value', function(subscription) {
-          if (subscription.val()) {
-            t.subscriptionId = subscription.val().subscriptionId;
-          } else {
-            Notification.requestPermission(function (result) {
-              if (result !== 'denied') {
-                navigator.serviceWorker.ready.then(function(registration) {
-                  registration.pushManager.subscribe().then(function(subscription) {
-                    t.subscriptionId = subscription.subscriptionId;
-
-                    userSubscriptionRef.set({
-                      subscriptionId: subscription.subscriptionId
-                    });
-                  });
-                });
-              }
+        Notification.requestPermission(function(result) {
+          if (result !== 'denied') {
+            navigator.serviceWorker.ready.then(function(registration) {
+              registration.pushManager.subscribe().then(function(subscription) {
+                t.subscriptionId = subscription.subscriptionId;
+              });
             });
           }
         });

@@ -10,6 +10,5 @@ module.exports = {
   gitHubActivityFirebaseUrl: firebaseUrl + '/githubActivity.json',
   gitHubActivityRef: ref.child('githubActivity'),
   ref: ref,
-  repoToSubscriptionIdsRef: ref.child('repoToSubscriptionIds'),
-  subscriptionsRef: ref.child('subscriptions')
+  repoToSubscriptionIdsRef: ref.child('repoToSubscriptionIds')
 };
