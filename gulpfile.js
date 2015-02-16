@@ -17,10 +17,7 @@ var watchify = require('watchify');
 var DEV_DIR = 'dev/';
 var DIST_DIR = 'dist/';
 
-gulp.task('js', bundle);
-var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
-bundler.on('update', bundle);
-function bundle() {
+function bundle(bundler) {
   return bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('bundle.js'))
@@ -30,6 +27,17 @@ function bundle() {
     .pipe(gulp.dest(DEV_DIR + 'bundled_scripts'))
     .pipe(size({title: 'Bundled JavaScript'}));
 }
+
+gulp.task('js', function() {
+  var bundler = browserify('./dev/scripts/main.js');
+  bundle(bundler);
+});
+
+gulp.task('js-watch', function() {
+  var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
+  bundle(bundler);
+  bundler.on('update', bundle);
+});
 
 gulp.task('bower', function() {
   return bower({
@@ -44,7 +52,7 @@ gulp.task('npm-install', function(callback) {
   });
 });
 
-gulp.task('serve-frontend', ['js'], function() {
+gulp.task('serve-frontend', ['js-watch'], function() {
   browserSync({
     server: {
       baseDir: DEV_DIR
