@@ -70,7 +70,8 @@ gulp.task('serve', ['serve-frontend', 'serve-backend']);
 gulp.task('vulcanize', function() {
   return gulp.src(DEV_DIR + 'elements.html')
     .pipe(vulcanize({
-      dest: DIST_DIR,
+      dest: DEV_DIR,
+      inline: true,
       strip: true
     }))
     .pipe(gulp.dest(DIST_DIR));
