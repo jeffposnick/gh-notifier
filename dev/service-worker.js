@@ -16,8 +16,8 @@ self.addEventListener('push', function(e) {
   if (e.data) {
     data = e.data.json();
   }
-  var title = data.title || 'No Payload with Message';
-  var message = data.message || 'This will change in future versions of Chrome.';
+  var title = data.title || 'GitHub Activity';
+  var message = data.message || 'No further details are available.';
   var icon = 'images/icon.png';
 
   var notification = new Notification(title, {
