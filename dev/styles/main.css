@@ -15,7 +15,9 @@ body {
 }
 
 header {
+  font-size: 2em;
   margin: 0.25em 0.25em 0.25em 1em;
+  text-transform: uppercase;
 }
 
 core-pages > div {
@@ -63,6 +65,7 @@ li:nth-child(even) {
 
 li > span {
   word-wrap: break-word;
+  margin-right: 0.75em;
 }
 
 li > paper-toggle-button {
@@ -71,13 +74,13 @@ li > paper-toggle-button {
 
 @media (max-width: 480px) {
   ul {
-    margin-top: 1em;
+    margin-top: 0;
     margin-left: 0;
     margin-right: 0;
   }
 
   li {
-    padding: 0.2em;
+    padding: 0.5em;
   }
 
   header {
