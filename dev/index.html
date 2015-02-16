@@ -27,45 +27,48 @@
           </paper-button>
         </div>
 
-        <div id="choose-repo">
-          <ul id="repo-list">
+        <div id="choose-repo" layout vertical>
+          <ul id="repo-list" flex>
             <template repeat="{{gitHubRepo in gitHubRepos}}">
-              <li>
+              <li layout horizontal justified>
+                <span flex>{{gitHubRepo.full_name}}</span>
+                <paper-toggle-button class="notification"
+                                     id="{{gitHubRepo.id}}"
+                                     disabled>
+                </paper-toggle-button>
                 <paper-button raised on-tap="{{showEditRepo}}">
-                  <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
-                  <span>{{gitHubRepo.full_name}}</span>
+                  <span>Edit Triggers</span>
                 </paper-button>
               </li>
             </template>
           </ul>
-          <paper-button raised on-tap="{{logout}}">
+          <paper-button raised on-tap="{{logout}}" self-start>
             <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
             <span>Logout</span>
           </paper-button>
         </div>
 
-        <div id="edit-repo">
+        <div id="edit-repo" layout vertical>
           <h1>{{selectedRepo.full_name}}</h1>
           <h3>Notify for:</h3>
-          <div id="web-hook-list">
+          <ul id="web-hook-list" flex>
             <template repeat="{{event in allWebhookEvents}}">
-              <div layout horizontal center>
+              <li layout horizontal center>
                 <div flex>{{event}}</div>
                 <paper-toggle-button class="event"
                                      id="{{event}}"
                                      disabled>
                 </paper-toggle-button>
-              </div>
+              </li>
             </template>
-
-            <div layout horizontal justified>
-              <paper-button raised on-tap="{{showChooseRepo}}">
-                <span>Cancel</span>
-              </paper-button>
-              <paper-button raised on-tap="{{saveWebhook}}">
-                <span>Save</span>
-              </paper-button>
-            </div>
+          </ul>
+          <div layout horizontal>
+            <paper-button raised on-tap="{{showChooseRepo}}" self-start>
+              <span>Cancel</span>
+            </paper-button>
+            <paper-button raised on-tap="{{saveWebhook}}" self-start>
+              <span>Save</span>
+            </paper-button>
           </div>
         </div>
       </core-pages>

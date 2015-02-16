@@ -5,41 +5,55 @@
 
 body {
   font-family: Roboto, sans-serif;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 core-pages > div {
   height: 100vh;
-  margin: 0;
+  margin: 0.25em;
   width: 100vw;
+}
+
+paper-button {
+  background: rgb(255, 255, 255);
+}
+
+paper-button[self-start] {
+  margin-bottom: 1em;
+  margin-left: 1em;
 }
 
 paper-button > core-icon {
   margin-right: 0.5em;
 }
 
-#repo-list {
+paper-button > core-icon {
+  margin-right: 0.5em;
+}
+
+ul {
+  border: 1px solid rgb(206, 206, 206);
   list-style: none;
+  margin-left: 1em;
+  overflow-y: scroll;
   padding: 0;
+  width: 95vw;
+  max-width: 600px;
 }
 
-#repo-list > li {
-  margin: 1em;
-}
-
-#edit-repo {
-  margin: 1em;
-}
-
-#web-hook-list {
-  width: 340px;
-  max-width: 100%;
-}
-
-#web-hook-list > div {
+li {
   padding: 1em;
 }
 
-#web-hook-list > div:nth-child(even) {
+li:nth-child(even) {
   background-color: rgb(240, 240, 240);
+}
+
+li > span {
+  margin-top: 0.75em;
+}
+
+li > paper-toggle-button {
+  margin-right: 0.75em;
+  margin-top: 0.75em;
 }
