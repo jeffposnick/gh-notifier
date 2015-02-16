@@ -2,6 +2,7 @@ var bower = require('gulp-bower');
 var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
+var del = require('del');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
@@ -9,9 +10,11 @@ var size = require('gulp-size');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var spawn = require('child_process').spawn;
+var vulcanize = require('gulp-vulcanize');
 var watchify = require('watchify');
 
 var DEV_DIR = 'dev/';
+var DIST_DIR = 'dist/';
 
 gulp.task('js', bundle);
 var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
@@ -59,6 +62,33 @@ gulp.task('backend', function(callback) {
   backend.on('exit', function(code) {
     callback(code === 0 ? null : 'Error status from spawned process: ' + code);
   });
+});
+
+gulp.task('vulcanize', function() {
+  return gulp.src(DEV_DIR + 'elements.html')
+    .pipe(vulcanize({
+      dest: DIST_DIR,
+      strip: true
+    }))
+    .pipe(gulp.dest(DIST_DIR));
+});
+
+gulp.task('clean', function(callback) {
+  del(DIST_DIR, callback);
+});
+
+gulp.task('copy-assets', function() {
+  return gulp.src([
+    DEV_DIR + '{bundled_scripts,fonts,images,styles}/**/*',
+    DEV_DIR + 'index.html',
+    DEV_DIR + 'manifest.json',
+    DEV_DIR + 'service-worker.js',
+    DEV_DIR + '**/webcomponents.min.js'
+  ]).pipe(gulp.dest(DIST_DIR));
+});
+
+gulp.task('build', function(callback) {
+  runSequence('clean', ['vulcanize', 'js'], 'copy-assets', callback);
 });
 
 gulp.task('default', function() {
