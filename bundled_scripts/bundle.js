@@ -1,9 +1,41 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./dev/scripts/main.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 'use strict';
 
 require('./lib/pageTemplate.js')(document.querySelector('#page-template'));
 
-},{"./lib/pageTemplate.js":"/Users/jeffy/git/gh-notifier/dev/scripts/lib/pageTemplate.js"}],"/Users/jeffy/git/gh-notifier/dev/scripts/lib/firebaseRefs.js":[function(require,module,exports){
+},{"./lib/pageTemplate.js":3}],2:[function(require,module,exports){
+/**
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 'use strict';
 
 var Firebase = require('firebase');
@@ -19,7 +51,23 @@ module.exports = {
   repoToSubscriptionIdsRef: ref.child('repoToSubscriptionIds')
 };
 
-},{"firebase":"/Users/jeffy/git/gh-notifier/node_modules/firebase/lib/firebase-web.js"}],"/Users/jeffy/git/gh-notifier/dev/scripts/lib/pageTemplate.js":[function(require,module,exports){
+},{"firebase":4}],3:[function(require,module,exports){
+/**
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 'use strict';
 
 var firebaseRefs = require('./firebaseRefs.js');
@@ -146,8 +194,10 @@ module.exports = function(t) {
   };
 
   t.toggleSubscriptionToRepo = function(e) {
+    var name = e.target.templateInstance.model.gitHubRepo.name;
     if (e.target.checked) {
       repoToSubscriptionIdsRef.child(e.target.id).push(t.subscriptionId);
+      showToast('Notifications for ' + name + ' will be delivered to this browser.');
     } else {
       repoToSubscriptionIdsRef.child(e.target.id).once('value', function(snapshot) {
         var currentSubscriptions = snapshot.val();
@@ -157,6 +207,7 @@ module.exports = function(t) {
           }
         });
       });
+      showToast('Notifications for ' + name + ' will no longer be delivered to this browser.');
     }
   };
 
@@ -220,7 +271,7 @@ module.exports = function(t) {
   });
 };
 
-},{"./firebaseRefs.js":"/Users/jeffy/git/gh-notifier/dev/scripts/lib/firebaseRefs.js"}],"/Users/jeffy/git/gh-notifier/node_modules/firebase/lib/firebase-web.js":[function(require,module,exports){
+},{"./firebaseRefs.js":2}],4:[function(require,module,exports){
 /*! @license Firebase v2.2.0 - License: https://www.firebase.com/terms/terms-of-service.html */ (function() {var h,aa=this;function m(a){return void 0!==a}function ba(){}function ca(a){a.Ob=function(){return a.kf?a.kf:a.kf=new a}}
 function da(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ea(a){return"array"==da(a)}function fa(a){var b=da(a);return"array"==b||"object"==b&&"number"==typeof a.length}function p(a){return"string"==typeof a}function ga(a){return"number"==typeof a}function ha(a){return"function"==da(a)}function ia(a){var b=typeof a;return"object"==b&&null!=a||"function"==b}function ja(a,b,c){return a.call.apply(a.bind,arguments)}
@@ -471,6 +522,6 @@ R.prototype.Ne=function(a,b){E("Firebase.resetPassword",2,2,arguments.length);J(
 function nb(a,b){y(!b||!0===a||!1===a,"Can't turn on custom loggers persistently.");!0===a?("undefined"!==typeof console&&("function"===typeof console.log?lb=q(console.log,console):"object"===typeof console.log&&(lb=function(a){console.log(a)})),b&&v.set("logging_enabled",!0)):a?lb=a:(lb=null,v.remove("logging_enabled"))}R.enableLogging=nb;R.ServerValue={TIMESTAMP:{".sv":"timestamp"}};R.SDK_VERSION="2.2.0";R.INTERNAL=Y;R.Context=Wh;R.TEST_ACCESS=$;})();
 module.exports = Firebase;
 
-},{}]},{},["./dev/scripts/main.js"]);
+},{}]},{},[1]);
 
 //# sourceMappingURL=bundle.js.map
