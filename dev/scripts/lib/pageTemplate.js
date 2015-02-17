@@ -73,11 +73,6 @@ module.exports = function(t) {
   };
 
   t.processHooks = function(e) {
-    var eventElements = document.querySelectorAll('.event');
-    [].forEach.call(eventElements, function(eventElement) {
-      eventElement.disabled = false;
-    });
-
     var ourWebHooks = e.detail.response.filter(function(webHook) {
       return webHook.config.url.indexOf(firebaseUrl) === 0;
     });
@@ -157,11 +152,6 @@ module.exports = function(t) {
     }
   };
 
-  t.showEditRepo = function(e) {
-    t.selectedRepo = e.target.templateInstance.model.gitHubRepo;
-    t.selectedPage = 'edit-repo';
-  };
-
   t.processGitHubRepos = function(e) {
     t.gitHubRepos = e.detail.response;
 
@@ -180,8 +170,19 @@ module.exports = function(t) {
     });
   };
 
+  t.showEditRepo = function(e) {
+    t.selectedRepo = e.target.templateInstance.model.gitHubRepo;
+    t.selectedPage = 'edit-repo';
+  };
+
   t.showChooseRepo = function() {
+    t.selectedRepo = null;
     t.selectedPage = 'choose-repo';
+
+    var eventElements = document.querySelectorAll('.event');
+    [].forEach.call(eventElements, function(eventElement) {
+      eventElement.checked = false;
+    });
   };
 
   t.addEventListener('template-bound', function() {
