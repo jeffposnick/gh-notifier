@@ -61,7 +61,10 @@
 
         <section id="edit-repo">
           <div layout vertical cross-fade>
-            <header>Triggers for <span>{{selectedRepo.full_name}}</span></header>
+            <header>
+              <a href="https://developer.github.com/webhooks/#events" target="_blank">Event</a>
+              Triggers for {{selectedRepo.name}}
+            </header>
             <ul id="web-hook-list" flex>
               <template repeat="{{event in allWebhookEvents}}">
                 <li layout horizontal center>
