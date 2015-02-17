@@ -19,9 +19,10 @@ var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var del = require('del');
-var ghPages = require('gulp-gh-pages');
+var ghPages = require('gh-pages');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var path = require('path');
 var runSequence = require('run-sequence');
 var size = require('gulp-size');
 var source = require('vinyl-source-stream');
@@ -119,8 +120,8 @@ gulp.task('build', function(callback) {
   runSequence('clean', ['vulcanize', 'js'], 'copy-assets', callback);
 });
 
-gulp.task('gh-pages', ['build'], function() {
-  return gulp.src(DIST_DIR + '**/*').pipe(ghPages());
+gulp.task('gh-pages', ['build'], function(callback) {
+  ghPages.publish(path.join(__dirname, DIST_DIR), callback);
 });
 
 gulp.task('default', ['serve']);
