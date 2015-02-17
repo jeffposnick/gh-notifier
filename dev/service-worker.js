@@ -40,6 +40,8 @@ self.addEventListener('push', function(e) {
   if (e.data) {
     data = e.data.json();
   }
+  // Chrome 42 doesn't support retrieving the data from the message at this time.
+  // Assign some default strings to use instead.
   var title = data.title || 'GitHub Activity';
   var message = data.message || 'Sorry, details are not available.';
   var icon = data.icon || 'images/icon.png';
