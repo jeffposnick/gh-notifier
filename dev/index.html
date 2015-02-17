@@ -19,61 +19,68 @@
 
   <body fullbleed>
     <template id="page-template" is="auto-binding">
-      <core-pages valueattr="id"
-                  selected="{{selectedPage}}"
-                  on-core-select="{{scrollToTop}}">
-        <div id="log-in" layout horizontal center-center>
-          <paper-button raised on-click="{{login}}">
-            <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
-            <span>Login with GitHub</span>
-          </paper-button>
-        </div>
-
-        <div id="choose-repo" layout vertical>
-          <ul id="repo-list" flex>
-            <template repeat="{{gitHubRepo in gitHubRepos}}">
-              <li layout horizontal center>
-                <span flex>{{gitHubRepo.full_name}}</span>
-                <paper-toggle-button class="notification"
-                                     id="{{gitHubRepo.id}}"
-                                     checked?="{{gitHubRepo.activeSubscription}}"
-                                     on-change="{{toggleSubscriptionToRepo}}">
-                </paper-toggle-button>
-                <paper-button raised on-click="{{showEditRepo}}">
-                  <span>Triggers</span>
-                </paper-button>
-              </li>
-            </template>
-          </ul>
-          <paper-button raised on-click="{{logout}}" self-start>
-            <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
-            <span>Logout</span>
-          </paper-button>
-        </div>
-
-        <div id="edit-repo" layout vertical>
-          <header>Triggers for {{selectedRepo.name}}</header>
-          <ul id="web-hook-list" flex>
-            <template repeat="{{event in allWebhookEvents}}">
-              <li layout horizontal center>
-                <span flex>{{event}}</span>
-                <paper-toggle-button class="event"
-                                     id="{{event}}"
-                                     disabled>
-                </paper-toggle-button>
-              </li>
-            </template>
-          </ul>
-          <div layout horizontal>
-            <paper-button raised on-click="{{showChooseRepo}}" self-start>
-              <span>Cancel</span>
-            </paper-button>
-            <paper-button raised on-click="{{saveWebhook}}" self-start>
-              <span>Save</span>
+      <core-animated-pages valueattr="id"
+                           transitions="cross-fade"
+                           selected="{{selectedPage}}"
+                           on-core-select="{{scrollToTop}}">
+        <section id="log-in">
+          <div layout horizontal center-center cross-fade>
+            <paper-button raised on-click="{{login}}">
+              <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
+              <span>Login with GitHub</span>
             </paper-button>
           </div>
-        </div>
-      </core-pages>
+        </section>
+
+        <section id="choose-repo">
+          <div layout vertical cross-fade>
+            <ul id="repo-list" flex>
+              <template repeat="{{gitHubRepo in gitHubRepos}}">
+                <li layout horizontal center>
+                  <span flex>{{gitHubRepo.full_name}}</span>
+                  <paper-toggle-button class="notification"
+                                       id="{{gitHubRepo.id}}"
+                                       checked?="{{gitHubRepo.activeSubscription}}"
+                                       on-change="{{toggleSubscriptionToRepo}}">
+                  </paper-toggle-button>
+                  <paper-button raised on-click="{{showEditRepo}}">
+                    <span>Triggers</span>
+                  </paper-button>
+                </li>
+              </template>
+            </ul>
+            <paper-button raised on-click="{{logout}}" self-start>
+              <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
+              <span>Logout</span>
+            </paper-button>
+          </div>
+        </section>
+
+        <section id="edit-repo">
+          <div layout vertical cross-fade>
+            <header>Triggers for <span>{{selectedRepo.full_name}}</span></header>
+            <ul id="web-hook-list" flex>
+              <template repeat="{{event in allWebhookEvents}}">
+                <li layout horizontal center>
+                  <span flex>{{event}}</span>
+                  <paper-toggle-button class="event"
+                                       id="{{event}}"
+                                       disabled>
+                  </paper-toggle-button>
+                </li>
+              </template>
+            </ul>
+            <div layout horizontal>
+              <paper-button raised on-click="{{showChooseRepo}}" self-start>
+                <span>Cancel</span>
+              </paper-button>
+              <paper-button raised on-click="{{saveWebhook}}" self-start>
+                <span>Save</span>
+              </paper-button>
+            </div>
+          </div>
+        </section>
+      </core-animated-pages>
 
       <paper-toast></paper-toast>
 
