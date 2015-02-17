@@ -118,9 +118,9 @@
 
       <template if="{{loggedIn && subscriptionId}}">
         <core-ajax auto
-                   url="https://api.github.com/user/repos"
+                   url="https://api.github.com/user/repos?per_page=100"
                    handleAs="json"
-                   headers='{"Authorization": "token {{authData.github.accessToken}}"}'
+                   headers='{"Authorization": "token {{authData.github.accessToken}}", "Accept": "application/vnd.github.moondragon+json"}'
                    on-core-response="{{processGitHubRepos}}">
         </core-ajax>
       </template>
