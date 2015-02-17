@@ -1,15 +1,28 @@
 # gh-notifier
-Work-in-progress.
+Get notifications about [GitHub events](https://developer.github.com/webhooks/#events) in your browser.
+Try it at https://jeffy.info/gh-notifier/
 
-## Technologies Used
-- Polymer
-- Service worker notifications
-- Firebase
-- GitHub API
-- Google Cloud Messaging
-- Fetch API
-- Browserify
-- NodeJS
+## Help
+- After logging in via GitHub, toggle notifications on/off for each of your repos.
+- The toggle applies to the current browser on the current device. You can enable notifications
+on multiple devices by visiting this page from each device.
+- Use the "Triggers" button to control which GitHub events will trigger a notification. These
+settings apply globallu to the GitHub repo itself.
 
 ## Requirements
-- Chrome 42+ with the "experimental web platform features" `chrome://flags` turned on.
+[Chrome 42+](https://www.google.com/chrome/browser/canary.html) with the
+"Enable experimental Web Platform features" turned on via
+`chrome://flags/#enable-experimental-web-platform-features`.
+
+## Technologies Used
+- [Polymer](https://www.polymer-project.org/)
+- [Service worker notifications](https://www.chromestatus.com/feature/5480344312610816)
+- [Web Application Manifest](https://www.chromestatus.com/feature/6488656873259008)
+- [Firebase](https://www.firebase.com/)
+- [GitHub REST API](https://developer.github.com/v3/)
+- [GitHub Webhooks](https://developer.github.com/webhooks/)
+- [Google Cloud Messaging](https://developer.android.com/google/gcm/index.html)
+- [Fetch API](https://www.chromestatus.com/feature/6730533392351232)
+- [Browserify](http://browserify.org/)
+- [Gulp](http://gulpjs.com/)
+- [Node.JS](http://nodejs.org/)
