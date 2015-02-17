@@ -124,8 +124,10 @@ module.exports = function(t) {
   };
 
   t.toggleSubscriptionToRepo = function(e) {
+    var name = e.target.templateInstance.model.gitHubRepo.name;
     if (e.target.checked) {
       repoToSubscriptionIdsRef.child(e.target.id).push(t.subscriptionId);
+      showToast('Notifications for ' + name + ' will be delivered to this browser.');
     } else {
       repoToSubscriptionIdsRef.child(e.target.id).once('value', function(snapshot) {
         var currentSubscriptions = snapshot.val();
@@ -135,6 +137,7 @@ module.exports = function(t) {
           }
         });
       });
+      showToast('Notifications for ' + name + ' will no longer be delivered to this browser.');
     }
   };
 
