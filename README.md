@@ -26,3 +26,6 @@ settings apply globallu to the GitHub repo itself.
 - [Browserify](http://browserify.org/)
 - [Gulp](http://gulpjs.com/)
 - [Node.JS](http://nodejs.org/)
+
+## License
+[Apache 2.0](https://raw.githubusercontent.com/jeffposnick/gh-notifier/master/LICENSE) © 2015 Google Inc.

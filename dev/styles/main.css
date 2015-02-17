@@ -29,13 +29,8 @@ paper-button {
   background: rgb(255, 255, 255);
 }
 
-paper-button[self-start] {
-  margin-bottom: 1em;
-  margin-left: 1em;
-}
-
-paper-button > core-icon {
-  margin-right: 0.5em;
+div > paper-button {
+  margin: 1em;
 }
 
 paper-button > core-icon {
@@ -45,7 +40,7 @@ paper-button > core-icon {
 ul {
   border: 1px solid rgb(206, 206, 206);
   list-style: none;
-  margin: 1em;
+  margin: 1em 1em 0 1em;
   overflow-y: scroll;
   padding: 0;
   max-width: 40em;
@@ -74,9 +69,7 @@ li > paper-toggle-button {
 
 @media (max-width: 480px) {
   ul {
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
   }
 
   li {

@@ -1,4 +1,16 @@
 <!doctype html>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
 <html>
   <head>
     <meta charset="utf-8">
@@ -24,7 +36,15 @@
                            selected="{{selectedPage}}"
                            on-core-select="{{scrollToTop}}">
         <section id="log-in">
-          <div layout horizontal center-center cross-fade>
+          <div layout vertical center-center cross-fade>
+            <div>Get notifications about GitHub events in your browser!</div>
+            <div>
+              <strong>Requires</strong> Chrome 42+ with the "Enable experimental Web Platform
+              features" flag set.
+            </div>
+            <div>
+              <code>chrome://flags/#enable-experimental-web-platform-features</code>
+            </div>
             <paper-button raised on-click="{{login}}">
               <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
               <span>Login with GitHub</span>
@@ -52,10 +72,17 @@
                 </li>
               </template>
             </ul>
-            <paper-button raised on-click="{{logout}}" self-start>
-              <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
-              <span>Logout</span>
-            </paper-button>
+            <div layout horizontal center>
+              <paper-button raised on-click="{{logout}}" self-start>
+                <core-icon src="images/GitHub-Mark-32px.png"></core-icon>
+                <span>Logout</span>
+              </paper-button>
+              <div>
+                <a href="https://github.com/jeffposnick/gh-notifier#gh-notifier" target="_blank" self-start>
+                  Learn More...
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
