@@ -25,47 +25,20 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('push', function(e) {
-  if (!(self.Notification && self.Notification.permission === 'granted')) {
-    console.error('Failed to display notification - not supported');
-
-    // Perhaps we don't have permission to show a notification
-    if (self.Notification) {
-      console.error('  notificaton permission set to:',
-        self.Notification.permission);
-    }
-    return;
-  }
-
-  var data = {};
-  if (e.data) {
-    data = e.data.json();
-  }
   // Chrome 42 doesn't support retrieving the data from the message at this time.
   // Assign some default strings to use instead.
-  var title = data.title || 'GitHub Activity';
-  var message = data.message || 'Sorry, details are not available.';
-  var icon = data.icon || 'images/icon.png';
-  var tag = data.tag || 'gh-notifier';
-
-  var notification = new Notification(title, {
-    body: message,
-    icon: icon,
-    tag: tag
+  var data = e.data ? e.data.json() : {};
+  self.registration.showNotification(data.title || 'GitHub Activity', {
+    body: data.message || 'Sorry, details are not available.',
+    icon: data.icon || 'images/icon.png',
+    tag: data.tag || 'https://github.com/'
   });
-
-  return notification;
-});
-
-self.addEventListener('pushsubscriptionlost', function(e) {
-  console.log(e);
 });
 
 self.addEventListener('notificationclick', function(e) {
-  console.log('Notification click received.');
-
-  if (clients.openWindow) {
-    clients.openWindow('https://gauntface.com/blog/2014/12/15/push-notifications-service-worker');
-  } else {
-    console.log('Notification clicked, but clients.openWindow is not currently supported');
+  if (e.notification.tag !== 'user_visible_auto_notification') {
+    // Open a same-origin page until https://code.google.com/p/chromium/issues/detail?id=457187
+    // is resolved.
+    clients.openWindow('redirect.html?url=' + encodeURIComponent(e.notification.tag));
   }
 });
