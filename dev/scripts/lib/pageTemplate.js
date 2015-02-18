@@ -136,36 +136,22 @@ module.exports = function(t) {
 
   t.toggleSubscriptionToRepo = function(e) {
     var name = e.target.templateInstance.model.gitHubRepo.name;
+    var subscriptionRef = repoToSubscriptionIdsRef.child(e.target.id).child(t.subscriptionId);
     if (e.target.checked) {
-      repoToSubscriptionIdsRef.child(e.target.id).push(t.subscriptionId);
+      subscriptionRef.set(t.authData.uid);
       showToast('Notifications for ' + name + ' will be delivered to this browser.');
     } else {
-      repoToSubscriptionIdsRef.child(e.target.id).once('value', function(snapshot) {
-        var currentSubscriptions = snapshot.val();
-        Object.keys(currentSubscriptions).forEach(function(key) {
-          if (currentSubscriptions[key] == t.subscriptionId) {
-            snapshot.ref().child(key).remove();
-          }
-        });
-      });
+      subscriptionRef.remove();
       showToast('Notifications for ' + name + ' will no longer be delivered to this browser.');
     }
   };
 
   t.processGitHubRepos = function(e) {
     t.gitHubRepos = e.detail.response;
-
-    repoToSubscriptionIdsRef.once('value', function(snapshot) {
-      var repoIdToSubscriptionIds = snapshot.val();
-      t.gitHubRepos.forEach(function(gitHubRepo) {
-        gitHubRepo.activeSubscription = false;
-        Object.keys(repoIdToSubscriptionIds).forEach(function(repoId) {
-          if (gitHubRepo.id == repoId) {
-            gitHubRepo.activeSubscription = Object.keys(repoIdToSubscriptionIds[repoId]).some(function(key) {
-              return repoIdToSubscriptionIds[repoId][key] == t.subscriptionId;
-            });
-          }
-        });
+    t.gitHubRepos.forEach(function(gitHubRepo) {
+      var subscriptionRef = repoToSubscriptionIdsRef.child(gitHubRepo.id + '/' + t.subscriptionId);
+      subscriptionRef.once('value', function(snapshot) {
+        gitHubRepo.activeSubscription = snapshot.val()  === t.authData.uid;
       });
     });
   };

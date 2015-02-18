@@ -23,23 +23,41 @@ var ref = firebaseRefs.ref;
 var gitHubActivityRef = firebaseRefs.gitHubActivityRef;
 var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
 var gcmUrl = new URL('https://android.googleapis.com/gcm/send');
+var secretEnvironmentVariable = 'FIREBASE_SECRET';
 
 logInfo('Starting up...');
 
-ref.child('apiKey').once('value', function(data) {
-  var apiKey = data.val();
+if (!process.env[secretEnvironmentVariable]) {
+  logError('Please make sure to set and export the',
+    secretEnvironmentVariable, 'environment variable using the Firebase secret from',
+    firebaseRefs.firebaseUrl + '/?page=Admin');
+  process.exit(1);
+}
 
-  gitHubActivityRef.on('child_added', function(data) {
-    var updatePayload = data.val();
+ref.authWithCustomToken(process.env[secretEnvironmentVariable], function(error, result) {
+  if (error) {
+    logError('Firebase authentication failed. Please make sure to set and export the',
+             secretEnvironmentVariable, 'environment variable using the Firebase secret from',
+             firebaseRefs.firebaseUrl + '/?page=Admin (code:', error.code + ')');
+    process.exit(1);
+  } else {
+    logInfo('Successfully authenticated.');
+    ref.child('apiKey').once('value', function(snapshot) {
+      listenForNewActivity(snapshot.val());
+    });
+  }
+});
+
+function listenForNewActivity(apiKey) {
+  gitHubActivityRef.on('child_added', function(gitHubActivitySnapshot) {
+    var updatePayload = gitHubActivitySnapshot.val();
     var repoId = updatePayload.repository.id;
 
-    repoToSubscriptionIdsRef.child(repoId).once('value', function(data) {
-      var subscripitionIdsMapping = data.val();
+    repoToSubscriptionIdsRef.child(repoId).once('value', function(subscriptionIdsSnapshot) {
+      var subscripitionIdsMapping = subscriptionIdsSnapshot.val();
 
       if (subscripitionIdsMapping) {
-        var subscriptionIds = Object.keys(subscripitionIdsMapping).map(function(key) {
-          return subscripitionIdsMapping[key];
-        });
+        var subscriptionIds = Object.keys(subscripitionIdsMapping);
 
         logInfo('Sending notification about repo', repoId, 'to subscriptions', subscriptionIds);
 
@@ -49,7 +67,7 @@ ref.child('apiKey').once('value', function(data) {
           } else {
             var response = JSON.parse(responseBody);
             if (response.success) {
-              gitHubActivityRef.ref().remove();
+              gitHubActivitySnapshot.ref().remove();
             } else {
               logError('GCM returned an error response:', response);
             }
@@ -61,7 +79,7 @@ ref.child('apiKey').once('value', function(data) {
       }
     });
   });
-});
+}
 
 function sendNotification(apiKey, subscriptionIds, updatePayload, callback) {
   var options = {
