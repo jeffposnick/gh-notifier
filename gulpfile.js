@@ -23,6 +23,7 @@ var ghPages = require('gh-pages');
 var glob = require('glob');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var merge = require('merge-stream');
 var path = require('path');
 var runSequence = require('run-sequence');
 var size = require('gulp-size');
@@ -47,12 +48,26 @@ function bundle(bundler, sourceScript) {
     .pipe(size({title: 'Bundled JavaScript'}));
 }
 
-gulp.task('js', function() {
+gulp.task('js', function(callback) {
   del.sync(BUNDLED_SCRIPTS_DIR);
-  glob.sync(DEV_DIR + 'scripts/*.js').forEach(function(sourceScript) {
+  var streams = glob.sync(DEV_DIR + 'scripts/*.js').map(function(sourceScript) {
     var bundler = browserify('./' + sourceScript);
-    bundle(bundler, sourceScript);
+    return bundle(bundler, sourceScript);
   });
+
+  if (streams.length === 0) {
+    return;
+  }
+
+  if (streams.length === 1) {
+    return streams[0];
+  }
+
+  var merged = merge(streams.pop(), streams.pop());
+  streams.forEach(function(stream) {
+    merged.add(stream);
+  });
+  return merged;
 });
 
 gulp.task('js-watch', function() {
@@ -117,7 +132,7 @@ gulp.task('clean', function(callback) {
 gulp.task('copy-assets', function() {
   return gulp.src([
     DEV_DIR + '{bundled_scripts,fonts,images,styles}/**/*',
-    DEV_DIR + 'index.html',
+    DEV_DIR + '!(elements)*.html',
     DEV_DIR + 'manifest.json',
     DEV_DIR + 'service-worker.js',
     DEV_DIR + '**/webcomponents.min.js'
