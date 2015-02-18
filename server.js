@@ -23,7 +23,7 @@ var ref = firebaseRefs.ref;
 var gitHubActivityRef = firebaseRefs.gitHubActivityRef;
 var repoToSubscriptionIdsRef = firebaseRefs.repoToSubscriptionIdsRef;
 var gcmUrl = new URL('https://android.googleapis.com/gcm/send');
-var secretEnvironmentVariable = 'FIREBASE_SECRET';
+var secretEnvironmentVariable = 'GH_NOTIFIER_FIREBASE_SECRET';
 
 logInfo('Starting up...');
 
