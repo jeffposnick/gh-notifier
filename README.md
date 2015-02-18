@@ -7,11 +7,13 @@ Try it at https://jeffy.info/gh-notifier/
 - The toggle applies to the current browser on the current device. You can enable notifications
 on multiple devices by visiting this page from each device.
 - Use the "Triggers" button to control which GitHub events will trigger a notification. These
-settings apply globallu to the GitHub repo itself.
+settings apply globally to the GitHub repo itself. If there isn't already a
+[Webhook](https://developer.github.com/webhooks/) set up for the repo, adding triggers creates one.
 
 ## Requirements
-[Chrome 42+](https://www.google.com/chrome/browser/canary.html) with the
-"Enable experimental Web Platform features" turned on via
+Any web browser that supports [service worker notifications](https://notifications.spec.whatwg.org/#service-worker-api).
+As of February 2015, this means [Chrome 42+](https://www.google.com/chrome/browser/canary.html)
+with the "Enable experimental Web Platform features" turned on via
 `chrome://flags/#enable-experimental-web-platform-features`.
 
 ## Technologies Used

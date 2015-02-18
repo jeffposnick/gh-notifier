@@ -187,7 +187,8 @@ module.exports = function(t) {
 
   t.addEventListener('template-bound', function() {
     navigator.serviceWorker.register('service-worker.js').catch(function(error) {
-      showToast('Service worker registration failed:' + error);
+      showToast('Please make sure you\'re using a browser that supports notifications. ' +
+                'Service worker registration failed:' + error);
     });
 
     ref.onAuth(function(authData) {
