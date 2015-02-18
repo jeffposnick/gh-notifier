@@ -25,10 +25,12 @@
   "dependencies": {
     "date-format": "0.0.2",
     "dom-urls": "^0.1.1",
-    "firebase": "^2.2.0"
+    "firebase": "^2.2.0",
+    "forever": "^0.14.1"
   },
   "scripts": {
-    "start": "gulp serve:backend"
+    "start": "forever start -a -l forever.log -o out.log -e err.log --uid 'gh-notifier' server.js",
+    "stop": "forever stop gh-notifier"
   },
   "repository": {
     "type": "git",
