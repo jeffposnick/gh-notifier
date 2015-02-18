@@ -92,7 +92,7 @@ gulp.task('npm-install', function(callback) {
   });
 });
 
-gulp.task('serve-frontend', ['bower', 'js-watch'], function() {
+gulp.task('serve:frontend', ['bower', 'js-watch'], function() {
   browserSync({
     server: {
       baseDir: DEV_DIR
@@ -106,14 +106,14 @@ gulp.task('serve-frontend', ['bower', 'js-watch'], function() {
   gulp.watch(DEV_DIR + 'bower.json', ['bower']);
 });
 
-gulp.task('serve-backend', ['npm-install'], function(callback) {
+gulp.task('serve:backend', ['npm-install'], function(callback) {
   var backend = spawn('node', ['server.js'], {stdio: 'inherit'});
   backend.on('exit', function(code) {
     callback(code === 0 ? null : 'Error status from spawned process: ' + code);
   });
 });
 
-gulp.task('serve', ['serve-frontend', 'serve-backend']);
+gulp.task('serve', ['serve:frontend', 'serve:backend']);
 
 gulp.task('vulcanize', function() {
   return gulp.src(DEV_DIR + 'elements.html')
