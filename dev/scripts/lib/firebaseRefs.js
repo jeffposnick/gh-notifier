@@ -19,12 +19,13 @@
 var Firebase = require('firebase');
 
 var firebaseUrl = 'https://burning-inferno-3626.firebaseio.com';
+var gitHubActivityPath = 'githubActivity';
 var ref = new Firebase(firebaseUrl);
 
 module.exports = {
   firebaseUrl: firebaseUrl,
-  gitHubActivityFirebaseUrl: firebaseUrl + '/githubActivity.json',
-  gitHubActivityRef: ref.child('githubActivity'),
+  gitHubActivityFirebaseUrl: firebaseUrl + '/' + gitHubActivityPath + '.json',
+  gitHubActivityRef: ref.child(gitHubActivityPath),
   ref: ref,
   repoToSubscriptionIdsRef: ref.child('repoToSubscriptionIds')
 };
