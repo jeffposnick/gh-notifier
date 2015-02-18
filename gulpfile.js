@@ -20,6 +20,7 @@ var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var del = require('del');
 var ghPages = require('gh-pages');
+var glob = require('glob');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var path = require('path');
@@ -32,28 +33,35 @@ var vulcanize = require('gulp-vulcanize');
 var watchify = require('watchify');
 
 var DEV_DIR = 'dev/';
+var BUNDLED_SCRIPTS_DIR = DEV_DIR + 'bundled_scripts';
 var DIST_DIR = 'dist/';
 
-function bundle(bundler) {
+function bundle(bundler, sourceScript) {
   return bundler.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('bundle.js'))
+    .pipe(source(path.basename(sourceScript)))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(DEV_DIR + 'bundled_scripts'))
-    .pipe(size({title: 'Bundled JavaScript'}));
+    .pipe(gulp.dest(BUNDLED_SCRIPTS_DIR))
+    .pipe(size({title: 'Bundled JavaScript for ' + sourceScript}));
 }
 
 gulp.task('js', function() {
-  var bundler = browserify('./dev/scripts/main.js');
-  bundle(bundler);
+  del.sync(BUNDLED_SCRIPTS_DIR);
+  glob.sync(DEV_DIR + 'scripts/*.js').forEach(function(sourceScript) {
+    var bundler = browserify('./' + sourceScript);
+    bundle(bundler, sourceScript);
+  });
 });
 
 gulp.task('js-watch', function() {
-  var bundler = watchify(browserify('./dev/scripts/main.js', watchify.args));
-  bundle(bundler);
-  bundler.on('update', bundle.bind(bundle, bundler));
+  del.sync(BUNDLED_SCRIPTS_DIR);
+  glob.sync(DEV_DIR + 'scripts/*.js').forEach(function(sourceScript) {
+    var bundler = browserify('./' + sourceScript, watchify.args);
+    bundle(bundler, sourceScript);
+    bundler.on('update', bundle.bind(bundle, bundler));
+  });
 });
 
 gulp.task('bower', function() {
