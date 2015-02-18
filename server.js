@@ -97,7 +97,7 @@ function sendNotification(apiKey, subscriptionIds, updatePayload, callback) {
     data = {
       icon: updatePayload.sender.avatar_url,
       message: updatePayload.repository.full_name + ' was updated by ' + updatePayload.sender.login,
-      tag: updatePayload.repository.full_name,
+      tag: updatePayload.repository.url,
       title: 'GitHub Activity'
     }
   } catch(error) {
