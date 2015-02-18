@@ -18,7 +18,13 @@
 
 var Firebase = require('firebase');
 
-var firebaseUrl = 'https://burning-inferno-3626.firebaseio.com';
+var firebaseInstance = process.env.GH_NOTIFIER_FIREBASE;
+if (!firebaseInstance) {
+  throw 'Please set and export the GH_NOTIFIER_FIREBASE environment variable to, e.g.,' +
+        ' "burning-inferno-1234" prior to building this website.';
+}
+
+var firebaseUrl = 'https://' + firebaseInstance + '.firebaseio.com';
 var gitHubActivityPath = 'githubActivity';
 var ref = new Firebase(firebaseUrl);
 

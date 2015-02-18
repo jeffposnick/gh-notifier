@@ -19,6 +19,7 @@ var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var del = require('del');
+var envify = require('envify');
 var ghPages = require('gh-pages');
 var glob = require('glob');
 var gulp = require('gulp');
@@ -52,6 +53,7 @@ gulp.task('js', function(callback) {
   del.sync(BUNDLED_SCRIPTS_DIR);
   var streams = glob.sync(DEV_DIR + 'scripts/*.js').map(function(sourceScript) {
     var bundler = browserify('./' + sourceScript);
+    bundler.transform(envify.bind(envify, {_: 'purge'}));
     return bundle(bundler, sourceScript);
   });
 
@@ -74,8 +76,9 @@ gulp.task('js-watch', function() {
   del.sync(BUNDLED_SCRIPTS_DIR);
   glob.sync(DEV_DIR + 'scripts/*.js').forEach(function(sourceScript) {
     var bundler = watchify(browserify('./' + sourceScript, watchify.args));
+    bundler.transform(envify.bind(envify, {_: 'purge'}));
     bundle(bundler, sourceScript);
-    bundler.on('update', bundle.bind(bundle, bundler));
+    bundler.on('update', bundle.bind(bundle, bundler, sourceScript));
   });
 });
 
@@ -102,7 +105,7 @@ gulp.task('serve:frontend', ['bower', 'js-watch'], function() {
   });
 
   gulp.watch(DEV_DIR + '**/*.{html,css,png}', browserSync.reload);
-  gulp.watch(DEV_DIR + 'bundled_scripts/bundle.js', browserSync.reload);
+  gulp.watch(DEV_DIR + 'bundled_scripts/*.js', browserSync.reload);
   gulp.watch(DEV_DIR + 'bower.json', ['bower']);
 });
 
