@@ -27,6 +27,9 @@
     "dom-urls": "^0.1.1",
     "firebase": "^2.2.0"
   },
+  "scripts": {
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jeffposnick/gh-notifier"
