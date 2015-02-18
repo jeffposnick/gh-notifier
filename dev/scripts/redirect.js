@@ -4,5 +4,7 @@ var queryParams = querystring.parse(window.location.search.slice(1));
 if (queryParams.url) {
   window.location.href = queryParams.url;
 } else {
-  console.error('Could not redirect. Parsed querystring is', queryParams);
+  var pElement = document.createElement('p');
+  pElement.textContent = 'Unable to redirect due to missing "url=" query string parameter.';
+  document.body.appendChild(pElement);
 }
