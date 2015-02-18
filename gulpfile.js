@@ -44,7 +44,7 @@ function bundle(bundler, sourceScript) {
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(BUNDLED_SCRIPTS_DIR))
-    .pipe(size({title: 'Bundled JavaScript for ' + sourceScript}));
+    .pipe(size({title: 'Bundled JavaScript'}));
 }
 
 gulp.task('js', function() {
@@ -58,7 +58,7 @@ gulp.task('js', function() {
 gulp.task('js-watch', function() {
   del.sync(BUNDLED_SCRIPTS_DIR);
   glob.sync(DEV_DIR + 'scripts/*.js').forEach(function(sourceScript) {
-    var bundler = browserify('./' + sourceScript, watchify.args);
+    var bundler = watchify(browserify('./' + sourceScript, watchify.args));
     bundle(bundler, sourceScript);
     bundler.on('update', bundle.bind(bundle, bundler));
   });
