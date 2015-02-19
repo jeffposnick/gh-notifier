@@ -54,6 +54,7 @@ gulp.task('js', function(callback) {
   var streams = glob.sync(DEV_DIR + 'scripts/*.js').map(function(sourceScript) {
     var bundler = browserify('./' + sourceScript);
     bundler.transform(envify.bind(envify, {_: 'purge'}));
+    bundler.transform('uglifyify');
     return bundle(bundler, sourceScript);
   });
 
