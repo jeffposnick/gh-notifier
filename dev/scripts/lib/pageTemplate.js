@@ -141,8 +141,18 @@ module.exports = function(t) {
       subscriptionRef.set(t.authData.uid);
       showToast('Notifications for ' + name + ' will be delivered to this browser.');
     } else {
-      subscriptionRef.remove();
-      showToast('Notifications for ' + name + ' will no longer be delivered to this browser.');
+      navigator.serviceWorker.ready.then(function(registration) {
+        return registration.pushManager.getSubscription()
+      }).then(function(subscription) {
+         return subscription.unsubscribe();
+      }).then(function(success) {
+        if (success) {
+          subscriptionRef.remove();
+          showToast('Notifications for ' + name + ' will no longer be delivered to this browser.');
+        } else {
+          showToast('The request to unsubscribe did not succeed.');
+        }
+      });
     }
   };
 
@@ -187,11 +197,12 @@ module.exports = function(t) {
         Notification.requestPermission(function(result) {
           if (result === 'granted') {
             navigator.serviceWorker.ready.then(function(registration) {
-              registration.pushManager.subscribe().then(function(subscription) {
-                t.subscriptionId = subscription.subscriptionId;
-              }).catch(function(error) {
-                showToast('BUG: PLEASE RELOAD PAGE. Push registration failed: ' + error);
-              });
+              return registration.pushManager.subscribe();
+            }).then(function(subscription) {
+              // TODO: Save the endpoint value as well, instead of assuming GCM.
+              t.subscriptionId = subscription.subscriptionId;
+            }).catch(function(error) {
+              showToast('BUG: PLEASE RELOAD PAGE. Push registration failed: ' + error);
             });
           } else {
             showToast('Unable to proceed without notification permission.');
