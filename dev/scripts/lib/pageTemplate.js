@@ -197,10 +197,11 @@ module.exports = function(t) {
         Notification.requestPermission(function(result) {
           if (result === 'granted') {
             navigator.serviceWorker.ready.then(function(registration) {
-              return registration.pushManager.subscribe();
+              return registration.pushManager.subscribe({userVisibleOnly: true });
             }).then(function(subscription) {
+              console.log(subscription);
               // TODO: Save the endpoint value as well, instead of assuming GCM.
-              t.subscriptionId = subscription.subscriptionId;
+              t.subscriptionId = subscription.endpoint.split('/').pop();
             }).catch(function(error) {
               showToast('BUG: PLEASE RELOAD PAGE. Push registration failed: ' + error);
             });
