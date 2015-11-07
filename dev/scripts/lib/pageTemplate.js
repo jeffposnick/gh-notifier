@@ -199,7 +199,6 @@ module.exports = function(t) {
             navigator.serviceWorker.ready.then(function(registration) {
               return registration.pushManager.subscribe({userVisibleOnly: true });
             }).then(function(subscription) {
-              console.log(subscription);
               // TODO: Save the endpoint value as well, instead of assuming GCM.
               t.subscriptionId = subscription.endpoint.split('/').pop();
             }).catch(function(error) {
